@@ -33,7 +33,7 @@ jobs:
       - name: Compile Java code
         run: |
           mkdir -p out
-          find "Password Generator/src" -name "*.java" > sources.txt
+          find "PasswordGenerator/src" -name "*.java" > sources.txt
           javac -d out/ -cp "libs/junit-platform-console-standalone-1.8.1.jar" @sources.txt
 
       # 5. Run JUnit tests
