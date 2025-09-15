@@ -29,7 +29,8 @@ jobs:
       - name: Compile Java code
         run: |
           mkdir -p out
-          javac -d out/ -cp "libs/junit-platform-console-standalone-1.8.1.jar" "PasswordGenerator/src/**/*.java"
+          find PasswordGenerator/src -name "*.java" > sources.txt
+          javac -d out/ -cp "libs/junit-platform-console-standalone-1.8.1.jar" @sources.txt
 
       - name: Run tests
         run: |
