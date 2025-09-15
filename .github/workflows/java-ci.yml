@@ -11,37 +11,44 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 1. Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      # 2. Setup JDK 17
       - name: Setup JDK 17
         uses: actions/setup-java@v3
         with:
           distribution: temurin
           java-version: 17
 
+      # 3. Download JUnit 5 standalone jar
       - name: Download JUnit 5
         run: |
           mkdir -p libs
           curl -L -o libs/junit-platform-console-standalone-1.8.1.jar \
             https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/1.8.1/junit-platform-console-standalone-1.8.1.jar
 
+      # 4. Compile Java source files
       - name: Compile Java code
         run: |
           mkdir -p out
-          find PasswordGenerator/src -name "*.java" > sources.txt
+          find "Password Generator/src" -name "*.java" > sources.txt
           javac -d out/ -cp "libs/junit-platform-console-standalone-1.8.1.jar" @sources.txt
 
+      # 5. Run JUnit tests
       - name: Run tests
         run: |
           java -jar libs/junit-platform-console-standalone-1.8.1.jar \
           --class-path out/ \
           --scan-class-path
 
+      # 6. Package runnable JAR with Main as entry point
       - name: Package runnable JAR
         run: |
           jar cfe PasswordGenerator.jar Main -C out/ .
 
+      # 7. Upload artifact
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
